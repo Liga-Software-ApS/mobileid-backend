@@ -1,0 +1,98 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'war'
+	id "org.springdoc.openapi-gradle-plugin" version "1.3.4"
+}
+
+group = 'dk.liga.mobileid'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+
+	// all*.exclude module : 'spring-boot-starter-logging'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web' 
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// caching stuff
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+	// database stuff
+	implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// cert stuff
+	implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+	implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
+
+	// websocket stuff
+	implementation 'org.webjars:webjars-locator-core'
+	implementation 'org.webjars:sockjs-client:1.0.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3'
+	implementation 'org.webjars:bootstrap:3.3.7'
+	implementation 'org.webjars:jquery:3.1.1-1'
+
+	// firebase
+	implementation 'com.google.firebase:firebase-admin:8.2.0'
+
+	// crypto
+	implementation 'com.auth0:java-jwt:3.19.2'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// dev experience
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+
+	// oauth server
+	implementation "org.springframework.security:spring-security-oauth2-authorization-server:0.3.1"
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// tasks.named("bootBuildImage") {
+//   docker {
+// 	// change for host or use DOCKER_HOST
+//     host = "unix:///Users/simon/.colima/docker.sock"
+//   }
+// }
+
+apply plugin: 'java'
+
+test {
+    testLogging {
+        outputs.upToDateWhen {false}
+        showStandardStreams = true
+    }
+}
